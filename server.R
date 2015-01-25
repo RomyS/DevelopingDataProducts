@@ -36,7 +36,7 @@ shinyServer(function(input, output, session) {
 
         if (selectSector=="All"){
             ggplot(data=calUsage, aes(x=Year, y=Usage, fill=Sector)) + geom_bar(stat="identity") +  theme(legend.position="bottom") +
-                labs(title=paste("California Annual Electric Usage")) + ylab("Usage in gWh") + scale_x_continuous(breaks=c(calPrecip$Year))
+                labs(title=paste("California Annual Electric Usage")) + ylab("Usage in gWh") + scale_x_continuous(breaks=c(calUsage$Year))
         } else {
             selectData <- calUsage %>% filter(Sector==selectSector) 
             plot <- ggplot(data=selectData, aes(x=Year, y=Usage)) + geom_bar(stat="identity",fill="orange3") +  theme(legend.position="bottom") +

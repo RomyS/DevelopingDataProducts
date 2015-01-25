@@ -79,7 +79,9 @@ shinyUI(fluidPage(
                     sidebarLayout(
                         sidebarPanel(
                             h4("the Author"),
-                            helpText("Romy Susvilla")
+                            helpText("Romy Susvilla, 1/25/2015"),
+                            br(),
+                            helpText("'Essentially, all models are wrong, but some are useful.' -George E.P. Box")
                         ),
                         mainPanel(
                             wellPanel(

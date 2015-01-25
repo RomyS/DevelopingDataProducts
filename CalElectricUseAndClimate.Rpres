@@ -1,0 +1,60 @@
+Exploring California's Electric Usage and Climate
+========================================================
+author: Romy Susvilla
+date: January 25, 2015
+   
+What does California's data say about climate and electric usage? 
+=================================================================
+
+- Known fact - **climate affects electric usage**.
+- More air conditioning to cool our homes during hot weather.
+- During droughts, farmers use more electricity to pump groundwater from aquifers.
+- How about other sectors?  How are they affected?  How significant are these effects?
+
+From published data from the California Energy Commission (CEC) and the National
+Ocenic and Atmospheric Administration (NOAA) let's explore these questions.  Here are 
+some examples ...
+
+Agri. & Water Pumping Sector Usage
+========================================================
+```{r, echo=FALSE,fig.width=16,fig.height=10}
+library(shiny)
+library(ggplot2)
+library(dplyr)
+
+setwd("/Users/rsusvilla/Documents/Coursera/DevelopingDataProducts/project/myApp1")
+csvfile <- "./myData/calUsage.csv"
+calUsage <- read.csv(csvfile, header=T, sep=",")
+calUsage$Usage <- calUsage$Usage/1000 # make giga-watt-hour
+
+selectData <- calUsage %>% filter(Sector=="Agri_WaterPumping") 
+ggplot(data=selectData, aes(x=Year, y=Usage)) + geom_bar(stat="identity",fill="orange3") +  theme(legend.position="bottom") +
+    labs(title=paste("California's Annual Electric Usage, Agri. & Water Pumping Sector")) + ylab("Usage in gWh") + 
+    scale_x_continuous(breaks=c(calUsage$Year)) + geom_hline(aes(yintercept=mean(Usage))) + geom_smooth(method=lm,size=2) +
+     theme(plot.title=element_text(size=30), axis.title=element_text(size=25), axis.text=element_text(size=15))
+
+```
+
+Palmer Drought Severity Index
+========================================================
+```{r, echo=FALSE,fig.width=16,fig.height=10}
+setwd("/Users/rsusvilla/Documents/Coursera/DevelopingDataProducts/project/myApp1")
+
+csvfile <- "./myData/calPDSI.csv"
+calPDSI <- read.csv(csvfile, header=T, sep=",")
+
+calPDSI$colour <- ifelse(calPDSI$PDSI < 0, "negative", "positive")
+ggplot(data=calPDSI, aes(x=Year, y=PDSI)) + geom_bar(stat="identity",position="identity",aes(fill=colour)) + 
+    scale_fill_manual(values=c(positive="green4",negative="bisque4")) + labs(title=paste("California's Annual Statewide Palmer Drought Severity Index")) + 
+    theme(legend.position="none") + ylab("PDSI") + 
+    scale_x_continuous(breaks=c(calPDSI$Year)) + geom_hline(aes(yintercept=mean(PDSI))) + geom_smooth(method=lm,size=2) +  
+     theme(plot.title=element_text(size=30), axis.title=element_text(size=25), axis.text=element_text(size=15))
+
+# grid.arrange(plot1, plot2, ncol=2)
+```
+
+Ready to explore some more?
+===========================
+
+**... then just follow this [link] (http://romys.shinyapps.io/myApp1/)** 
+
